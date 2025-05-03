@@ -6,6 +6,7 @@ import com.iztechceng.graduation_managment.auth.model.dto.request.LoginRequest;
 import com.iztechceng.graduation_managment.auth.model.dto.response.JwtResponse;
 import com.iztechceng.graduation_managment.common.config.JwtService;
 import com.iztechceng.graduation_managment.auth.service.UserService;
+import com.iztechceng.graduation_managment.user.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +14,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,7 +44,18 @@ public class AuthController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtService.generateToken(authentication);
-        return ResponseEntity.ok(new JwtResponse(jwt));
+
+
+        String name = userService.getUserFullName(loginRequest.getEmail());
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        // Convert roles to a list of strings
+        List<String> roles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Return the JWT, name, and roles
+        return ResponseEntity.ok(new JwtResponse(jwt, name, roles));
     }
 
     @PreAuthorize("hasRole('ADVISOR')")
