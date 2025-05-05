@@ -78,8 +78,12 @@ public class AuthController {
             if (!registerRequest.isPasswordMatching()) {
                 return ResponseEntity.badRequest().body("Passwords do not match.");
             }else {
-                userRegistrationService.registerUser(registerRequest);
-                return ResponseEntity.ok("Registration successful.");
+                try{
+                    userRegistrationService.registerUser(registerRequest);
+                    return ResponseEntity.ok("Registration successful.");
+                }catch (Exception e){
+                    return ResponseEntity.badRequest().body(e.getMessage());
+                }
             }
         }
         else {
