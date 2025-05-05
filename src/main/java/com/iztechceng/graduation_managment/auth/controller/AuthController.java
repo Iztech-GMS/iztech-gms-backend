@@ -1,12 +1,11 @@
 package com.iztechceng.graduation_managment.auth.controller;
 
 import com.iztechceng.graduation_managment.auth.model.dto.request.RegisterRequest;
-import com.iztechceng.graduation_managment.auth.service.secured_user.RegisterService;
 import com.iztechceng.graduation_managment.auth.model.dto.request.LoginRequest;
 import com.iztechceng.graduation_managment.auth.model.dto.response.JwtResponse;
+import com.iztechceng.graduation_managment.auth.service.secured_user.SecuredUserService;
 import com.iztechceng.graduation_managment.common.config.JwtService;
-import com.iztechceng.graduation_managment.auth.service.UserService;
-import com.iztechceng.graduation_managment.user.repository.UserRepository;
+import com.iztechceng.graduation_managment.auth.service.UserRegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +31,8 @@ import java.util.stream.Collectors;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final RegisterService registerService;
-    private final UserService userService;
+    private final SecuredUserService securedUserService;
+    private final UserRegistrationService userRegistrationService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
@@ -46,7 +45,7 @@ public class AuthController {
         String jwt = jwtService.generateToken(authentication);
 
 
-        String name = userService.getUserFullName(loginRequest.getEmail());
+        String name = userRegistrationService.getUserFullName(loginRequest.getEmail());
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         // Convert roles to a list of strings
@@ -75,11 +74,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        if(registerService.confirmUserAccount(registerRequest.getEmail())) {
+        if(securedUserService.confirmUserAccount(registerRequest.getEmail())) {
             if (!registerRequest.isPasswordMatching()) {
                 return ResponseEntity.badRequest().body("Passwords do not match.");
             }else {
-                userService.registerUser(registerRequest);
+                userRegistrationService.registerUser(registerRequest);
                 return ResponseEntity.ok("Registration successful.");
             }
         }
