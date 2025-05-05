@@ -4,14 +4,14 @@ import com.iztechceng.graduation_managment.auth.model.dto.request.RegisterReques
 import com.iztechceng.graduation_managment.auth.repository.SecuredUserRepository;
 import com.iztechceng.graduation_managment.auth.strategy.RegistrationStrategy;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserRegistrationService {
     private final SecuredUserRepository securedUserRepository;
     private final List<RegistrationStrategy> strategies;
 
@@ -32,7 +32,3 @@ public class UserService {
     }
 
 }
-
-
-
-

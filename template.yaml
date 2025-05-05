@@ -30,12 +30,15 @@ Parameters:
     NoEcho: true
   VpcId:
     Type: String
+    Default: vpc-0dc98e3a4f0b4dd98
     Description: VPC for RDS and Lambda
   Subnet1Id:
     Type: String
+    Default: subnet-00eefd2847fcb3277
     Description: First subnet ID
   Subnet2Id:
     Type: String
+    Default: subnet-029d161f29fa088a3
     Description: Second subnet ID
 
 Resources:
