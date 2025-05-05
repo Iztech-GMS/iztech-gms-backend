@@ -50,8 +50,14 @@ public class GraduationManagmentApplication {
 				.lastName("Karahan")
 				.build();
 
+		SecuredUser user3 = SecuredUser.builder()
+				.email("sezginmercan@student.iztech.com")
+				.firstName("Sezgin")
+				.lastName("Mercan")
+				.build();
 
-		securedUserRepository.saveAll(List.of(user1, user2));
+
+		securedUserRepository.saveAll(List.of(user1, user2, user3));
 
 		System.out.println("✅ SecuredUser mock data inserted.");
 
