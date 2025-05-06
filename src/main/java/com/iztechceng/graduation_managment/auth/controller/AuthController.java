@@ -8,6 +8,7 @@ import com.iztechceng.graduation_managment.common.config.JwtService;
 import com.iztechceng.graduation_managment.auth.service.UserRegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.QAbstractAuditable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,11 +37,16 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword())
-        );
+        Authentication authentication;
+        try{
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword())
+            );
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Invalid email or password.");
+        }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtService.generateToken(authentication);
 
