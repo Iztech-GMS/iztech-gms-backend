@@ -36,11 +36,16 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword())
-        );
+        Authentication authentication;
+        try{
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword())
+            );
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Invalid email or password.");
+        }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtService.generateToken(authentication);
 
