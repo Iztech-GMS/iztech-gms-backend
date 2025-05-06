@@ -2,8 +2,10 @@ package com.iztechceng.graduation_managment.auth.controller;
 
 import com.iztechceng.graduation_managment.auth.model.dto.request.secured_user.SecuredUserRequest;
 import com.iztechceng.graduation_managment.auth.model.dto.request.secured_user.SecuredUserResponse;
+import com.iztechceng.graduation_managment.auth.repository.SecuredUserRepository;
 import com.iztechceng.graduation_managment.auth.service.secured_user.SecuredUserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +21,10 @@ public class SecuredUserController {
 
     @PreAuthorize("hasRole('ADVISOR')")
     @PostMapping
-    public ResponseEntity<SecuredUserResponse> create(@RequestBody SecuredUserRequest request) {
+    public ResponseEntity<?> create(@RequestBody SecuredUserRequest request) {
+        if (securedUserService.isEmailExists(request.getEmail())) {
+            return ResponseEntity.badRequest().body("Email already exists");
+        }
         return ResponseEntity.ok(securedUserService.create(request));
     }
 

@@ -8,7 +8,6 @@ import com.iztechceng.graduation_managment.common.config.JwtService;
 import com.iztechceng.graduation_managment.auth.service.UserRegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.QAbstractAuditable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
