@@ -107,7 +107,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<skip>true</skip> <!-- Sadece shade jar üretilecek -->
+					<mainClass>com.iztechceng.graduation_managment.GraduationManagmentApplication</mainClass>
+					<layout>JAR</layout>
 				</configuration>
 			</plugin>
 
@@ -142,6 +143,8 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
+
 		</plugins>
 	</build>
 
