@@ -1,6 +1,6 @@
 package com.iztechceng.graduation_managment.graduationrequest.controller;
 
-import com.iztechceng.graduation_managment.graduationrequest.model.dto.request.GraduationApproveRequest;
+import com.iztechceng.graduation_managment.graduationrequest.model.dto.request.GraduationConsiderationRequest;
 import com.iztechceng.graduation_managment.graduationrequest.service.GraduationRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,14 +32,28 @@ public class GraduationRequestController {
 
     @PreAuthorize("hasAnyRole('ADVISOR', 'STUDENTAFFAIRS', 'DEAN', 'SECRETARY')")
     @PostMapping("/approve")
-    public ResponseEntity<String> approveGraduationRequest(Principal principal, @RequestBody GraduationApproveRequest graduationApproveRequest) {
+    public ResponseEntity<String> approveGraduationRequest(Principal principal, @RequestBody GraduationConsiderationRequest graduationConsiderationRequest) {
         try {
-            graduationRequestService.approveGraduationRequest(principal.getName(), graduationApproveRequest.getGraduationRequestId());
+            graduationRequestService.approveGraduationRequest(principal.getName(), graduationConsiderationRequest.getGraduationRequestId());
         }catch (Exception e){
             return ResponseEntity.badRequest().body("Error occurred while approving the graduation request: " + e.getMessage());
         }
         return ResponseEntity.ok("Graduation request approved successfully");
     }
+
+    @PreAuthorize("hasAnyRole('ADVISOR', 'STUDENTAFFAIRS', 'DEAN', 'SECRETARY')")
+    @PostMapping("/reject")
+    public ResponseEntity<String> rejectGraduationRequest(Principal principal, @RequestBody GraduationConsiderationRequest graduationConsiderationRequest) {
+        try {
+            graduationRequestService.rejectGraduationRequest(principal.getName(), graduationConsiderationRequest.getGraduationRequestId());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error occurred while rejecting the graduation request: " + e.getMessage());
+        }
+        return ResponseEntity.ok("Graduation request rejected successfully");
+    }
+
+
+
 }
 
 

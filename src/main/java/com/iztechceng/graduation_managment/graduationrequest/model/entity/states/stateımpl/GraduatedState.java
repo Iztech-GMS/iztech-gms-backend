@@ -12,8 +12,4 @@ public class GraduatedState implements GraduationRequestState {
         return null;
     }
 
-    @Override
-    public GraduationRequest reject(GraduationRequest graduationRequest, String emailWhoRejected) {
-        return null;
-    }
 }

@@ -49,9 +49,7 @@ public class GraduationRequest {
     public GraduationRequest approve(String emailWhoApproved) {
         return state.approve(this, emailWhoApproved);
     }
-    public GraduationRequest reject(String emailWhoRejected) {
-        return state.reject(this, emailWhoRejected);
-    }
+
     public void addIntoApprovalLogs(ApprovalLog approvalLog) {
         approvalLogs.add(approvalLog);
     }

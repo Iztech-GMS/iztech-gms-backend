@@ -4,5 +4,4 @@ import com.iztechceng.graduation_managment.graduationrequest.model.entity.Gradua
 
 public interface GraduationRequestState {
     GraduationRequest approve(GraduationRequest graduationRequest, String emailWhoApproved);
-    GraduationRequest reject(GraduationRequest graduationRequest, String emailWhoRejected);
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GraduationApproveRequest {
+public class GraduationConsiderationRequest {
 
     private Long graduationRequestId;
 
