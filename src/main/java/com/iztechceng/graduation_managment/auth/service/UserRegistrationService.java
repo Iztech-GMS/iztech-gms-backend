@@ -16,7 +16,6 @@ public class UserRegistrationService {
     private final List<RegistrationStrategy> strategies;
     private final UserRepository userRepository;
 
-
     public void registerUser(RegisterRequest registerRequest) {
 
         if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {

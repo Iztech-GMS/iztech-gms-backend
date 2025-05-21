@@ -4,6 +4,7 @@ import com.iztechceng.graduation_managment.auth.model.dto.request.secured_user.S
 import com.iztechceng.graduation_managment.auth.model.dto.request.secured_user.SecuredUserResponse;
 import com.iztechceng.graduation_managment.auth.repository.SecuredUserRepository;
 import com.iztechceng.graduation_managment.auth.service.secured_user.SecuredUserService;
+import com.iztechceng.graduation_managment.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,9 @@ import java.util.List;
 @RequestMapping("/secured-users")
 @RequiredArgsConstructor
 public class SecuredUserController {
-
+    private final SecuredUserRepository securedUserRepository;
     private final SecuredUserService securedUserService;
+    private final UserRepository userRepository;
 
     @PreAuthorize("hasRole('ADVISOR')")
     @PostMapping

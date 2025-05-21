@@ -108,7 +108,7 @@ public class GraduationManagmentApplication {
 				.password(passwordEncoder.encode("dean123"))
 				.roles(Set.of(roleRepository.findByRoleName(RoleName.ROLE_DEAN).orElseThrow()))
 				.build();
-
+    
 		Advisor advisor1 = Advisor.builder()
 				.name("Samet Tenekeci")
 				.email("samettenekeci@advisor.iztech.com")
@@ -155,6 +155,4 @@ public class GraduationManagmentApplication {
 
 		System.out.println("✅ Mock roles inserted.");
 	}
-
-
 }

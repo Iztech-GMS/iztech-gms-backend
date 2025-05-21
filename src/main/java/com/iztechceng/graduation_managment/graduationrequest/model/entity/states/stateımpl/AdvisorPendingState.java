@@ -21,7 +21,8 @@ public class AdvisorPendingState implements GraduationRequestState {
        graduationRequest.addIntoApprovalLogs(approvalLog);
        graduationRequest.setStatus(RequestStatus.SECRETARY_PENDING);
        graduationRequest.setApprover(graduationRequest.getStudent().getSecretary()); // the next person who will save dont forget
-       return graduationRequest;
+       
+      return graduationRequest;
     }
 
 }
