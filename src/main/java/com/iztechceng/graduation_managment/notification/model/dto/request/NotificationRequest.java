@@ -12,7 +12,5 @@ public class NotificationRequest {
     @NotBlank
     private String message;
     @NotBlank
-    private String senderEmail;
-    @NotBlank
     private String receiverEmail;
 }

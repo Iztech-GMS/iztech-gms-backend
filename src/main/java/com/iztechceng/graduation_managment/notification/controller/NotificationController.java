@@ -1,13 +1,18 @@
 package com.iztechceng.graduation_managment.notification.controller;
 
 import com.iztechceng.graduation_managment.notification.model.dto.request.NotificationRequest;
+import com.iztechceng.graduation_managment.notification.model.dto.response.NotificationResponse;
 import com.iztechceng.graduation_managment.notification.service.NotificationService;
 import com.iztechceng.graduation_managment.user.model.User;
 import com.iztechceng.graduation_managment.user.model.exceptions.UserNotFoundException;
 import com.iztechceng.graduation_managment.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/notifications")
@@ -15,22 +20,24 @@ import org.springframework.web.bind.annotation.*;
 public class NotificationController {
 
     private final NotificationService notificationService;
-    private final UserRepository userRepository;
 
+    @PreAuthorize("hasAnyRole('ADVISOR','STUDENT', 'STUDENTAFFAIRS', 'DEAN', 'SECRETARY')")
     @PostMapping("/send")
-    public ResponseEntity<String> sendNotification(@RequestBody NotificationRequest notificationRequest) {
-        String senderEmail = notificationRequest.getSenderEmail();
+    public ResponseEntity<NotificationResponse> sendNotification(Principal principal, @RequestBody NotificationRequest notificationRequest) {
+        String senderEmail = principal.getName();
         String receiverEmail = notificationRequest.getReceiverEmail();
         String message = notificationRequest.getMessage();
+        return ResponseEntity.ok(notificationService.sendNotification(senderEmail, receiverEmail, message));
 
-        User sender = userRepository.findByEmail(senderEmail)
-                .orElseThrow(() -> new UserNotFoundException("Sender not found"));
-        User receiver = userRepository.findByEmail(receiverEmail)
-                .orElseThrow(() -> new UserNotFoundException("Receiver not found"));
+    }
 
-        notificationService.sendNotification(sender, receiver, message);
+    @PreAuthorize("hasAnyRole('ADVISOR','STUDENT', 'STUDENTAFFAIRS', 'DEAN', 'SECRETARY')")
+    @GetMapping("/my-messages")
+    public ResponseEntity<?> getMyMessages(Principal principal) {
+        String email = principal.getName();
+        List<NotificationResponse> notifications = notificationService.getNotificationsForUser(email);
+        return ResponseEntity.ok(notifications);
 
-        return ResponseEntity.ok("Notification sent successfully!");
     }
 
 }

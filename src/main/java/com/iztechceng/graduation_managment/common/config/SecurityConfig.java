@@ -42,6 +42,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/register").permitAll() // login ve register açık
+                        .requestMatchers("/swagger-ui/**").permitAll() // Swagger UI açık
+                        .requestMatchers("/v3/api-docs*/**").permitAll() // Swagger API dokümanları açık
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers(
+                                "/v1/api/get-token",
+                                "/swagger-ui.html",
+                                "/swagger-ui/*",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/webjars/**").permitAll()
                         .anyRequest().authenticated()             // diğer her şey korumalı
                 )
                 .authenticationProvider(authenticationProvider())

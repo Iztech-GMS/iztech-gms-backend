@@ -6,6 +6,7 @@ import com.iztechceng.graduation_managment.graduationrequest.model.entity.states
 import com.iztechceng.graduation_managment.graduationrequest.model.enums.RequestStatus;
 import com.iztechceng.graduation_managment.graduationrequest.model.enums.ApproveStatus;
 import com.iztechceng.graduation_managment.graduationrequest.service.ApprovalLogService;
+import com.iztechceng.graduation_managment.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AdvisorPendingState implements GraduationRequestState {
     private final ApprovalLogService approvalLogService;
+    private final NotificationService notificationService;
 
     @Override
     public GraduationRequest approve(GraduationRequest graduationRequest, String emailWhoApproved) {
@@ -20,7 +22,16 @@ public class AdvisorPendingState implements GraduationRequestState {
                ApproveStatus.ACCEPTED);
        graduationRequest.addIntoApprovalLogs(approvalLog);
        graduationRequest.setStatus(RequestStatus.SECRETARY_PENDING);
-       graduationRequest.setApprover(graduationRequest.getStudent().getSecretary()); // the next person who will save dont forget
+       graduationRequest.setApprover(graduationRequest.getStudent().getSecretary());
+
+       notificationService.sendNotification(emailWhoApproved,
+               graduationRequest.getStudent().getEmail(),
+               "Graduation request approved by advisor. Please check the request.");
+
+       notificationService.sendNotification(emailWhoApproved,
+               graduationRequest.getStudent().getSecretary().getEmail(),
+               "Graduation request approved by advisor. Please check the request.");
+
        return graduationRequest;
     }
 

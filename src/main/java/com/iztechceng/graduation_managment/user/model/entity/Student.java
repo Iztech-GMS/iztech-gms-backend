@@ -35,6 +35,15 @@ public class Student extends User {
     @JoinColumn(name = "studentaffairs_id")
     private User studentAffairs;
 
+    @Column(name = "gpa")
+    private double gpa;
+
+    @Column(name = "total_earned_credits")
+    private int totalEarnedCredits;
+
+    @Column(name = "mandatory_completed")
+    private boolean isMandatoryCourseCompleted;
+
 
 }
 
