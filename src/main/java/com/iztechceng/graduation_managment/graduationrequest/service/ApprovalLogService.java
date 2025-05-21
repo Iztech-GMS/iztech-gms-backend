@@ -1,6 +1,7 @@
 package com.iztechceng.graduation_managment.graduationrequest.service;
 
 import com.iztechceng.graduation_managment.auth.service.UserRegistrationService;
+import com.iztechceng.graduation_managment.graduationrequest.model.dto.response.ApprovalLogResponse;
 import com.iztechceng.graduation_managment.graduationrequest.model.entity.ApprovalLog;
 import com.iztechceng.graduation_managment.graduationrequest.model.entity.GraduationRequest;
 import com.iztechceng.graduation_managment.graduationrequest.model.enums.ApproveStatus;
@@ -31,6 +32,17 @@ public class ApprovalLogService {
         approvalLog.setApprovalDate(LocalDateTime.now());
         approvalLog.setApproveStatus(approveStatus);
         return approvalLogRepository.save(approvalLog);
+    }
+
+    public static ApprovalLogResponse toResponse(ApprovalLog approvalLog) {
+        return ApprovalLogResponse.builder()
+                .id(approvalLog.getId())
+                .graduationRequestId(approvalLog.getGraduationRequest().getId())
+                .approverName(approvalLog.getApproverName())
+                .approverMail(approvalLog.getApproverMail())
+                .approvalDate(approvalLog.getApprovalDate())
+                .approveStatus(approvalLog.getApproveStatus())
+                .build();
     }
 
 }
