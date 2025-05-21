@@ -143,6 +143,4 @@ public class GraduationManagmentApplication {
 
 		System.out.println("✅ Mock roles inserted.");
 	}
-
-
 }
