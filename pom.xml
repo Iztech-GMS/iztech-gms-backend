@@ -100,9 +100,27 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.iztechceng.graduation_managment.GraduationManagmentApplication</mainClass>
+					<layout>JAR</layout>
+				</configuration>
 			</plugin>
 
-			<!-- Java Compiler Plugin -->
+			<!-- Maven Shade Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+      
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -119,7 +137,10 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
+
 		</plugins>
 	</build>
+
 
 </project>
