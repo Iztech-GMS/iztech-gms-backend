@@ -1,0 +1,128 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Serverless Spring Boot 3 API - com.iztechceng.::SpringBootAWSLambda
+
+Mappings:
+  RegionMap:
+    eu-west-1:
+      AccountId: '245952114297'
+
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
+    Cors:
+      AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+      AllowHeaders: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+      AllowOrigin: "'*'"
+  Function:
+    Environment:
+      Variables:
+        SPRING_DATASOURCE_URL: !Sub jdbc:postgresql://${GmsDB.Endpoint.Address}:${GmsDB.Endpoint.Port}/mydb
+        SPRING_DATASOURCE_USERNAME: myuser
+        SPRING_DATASOURCE_PASSWORD: mypassword
+
+Parameters:
+  DBUsername:
+    Type: String
+    Default: myuser
+  DBPassword:
+    Type: String
+    NoEcho: true
+  VpcId:
+    Type: String
+    Default: vpc-0dc98e3a4f0b4dd98
+    Description: VPC for RDS and Lambda
+  Subnet1Id:
+    Type: String
+    Default: subnet-00eefd2847fcb3277
+    Description: First subnet ID
+  Subnet2Id:
+    Type: String
+    Default: subnet-029d161f29fa088a3
+    Description: Second subnet ID
+
+Resources:
+  LambdaDBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for Lambda function
+      VpcId: !Ref VpcId
+
+  LambdaDBSecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref LambdaDBSecurityGroup
+      IpProtocol: tcp
+      FromPort: 5432
+      ToPort: 5432
+      SourceSecurityGroupId: !Ref LambdaDBSecurityGroup
+
+  # Added DBSubnetGroup resource
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet group for RDS instance
+      SubnetIds:
+        - !Ref Subnet1Id
+        - !Ref Subnet2Id
+
+  GmsDB:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: gms-db
+      Engine: postgres
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: 20
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      VPCSecurityGroups:
+        - !Ref LambdaDBSecurityGroup
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      PubliclyAccessible: true
+      DBName: mydb
+      BackupRetentionPeriod: 0
+      MultiAZ: false
+      DeletionProtection: false
+
+  RDSSecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref LambdaDBSecurityGroup
+      IpProtocol: tcp
+      FromPort: 5432
+      ToPort: 5432
+      CidrIp: 78.190.127.142/32
+
+  IztechGMSBackend:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: IztechGMSBackend
+      CodeUri: .
+      Handler: com.iztechceng.graduation_managment.StreamLambdaHandler::handleRequest
+      Runtime: java21
+      Timeout: 30
+      MemorySize: 2048
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaDBSecurityGroup
+        SubnetIds:
+          - !Ref Subnet1Id
+          - !Ref Subnet2Id
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            RestApiId: !Ref GmsApi
+
+  GmsApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: api
+      EndpointConfiguration: REGIONAL
+      Cors:
+        AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+        MaxAge: "'3600'"
