@@ -55,4 +55,8 @@ public class SecuredUserService {
         return securedUserRepository.findByEmail(email).isPresent();
     }
 
+    public boolean isEmailExists(String email) {
+        return securedUserRepository.findByEmail(email).isPresent();
+    }
+
 }
