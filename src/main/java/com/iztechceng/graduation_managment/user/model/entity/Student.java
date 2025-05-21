@@ -19,8 +19,22 @@ public class Student extends User {
 
     private GraduationStatus graduationStatus;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,CascadeType.DETACH})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advisor_id")
     private Advisor advisor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dean_id")
+    private User dean;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "secretary_id")
+    private User secretary;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studentaffairs_id")
+    private User studentAffairs;
+
+
 }
 

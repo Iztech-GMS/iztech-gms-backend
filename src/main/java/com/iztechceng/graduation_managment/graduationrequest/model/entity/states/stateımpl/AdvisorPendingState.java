@@ -23,7 +23,7 @@ public class AdvisorPendingState implements GraduationRequestState {
         // UNUTMA ÜŞENDİN
         // UNUTMA ÜŞENDİN VE SECRETARY LAZIM SİSTEME
         // UNUTMA ÜŞENDİN
-       graduationRequest.setApprover(null); // the next person who will save dont forget
+       graduationRequest.setApprover(graduationRequest.getStudent().getSecretary()); // the next person who will save dont forget
         // UNUTMA ÜŞENDİN
         // UNUTMA ÜŞENDİN VE SECRETARY LAZIM SİSTEME
         // UNUTMA ÜŞENDİN
