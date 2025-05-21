@@ -38,7 +38,7 @@ public class GraduationRequestService {
 
     public void approveGraduationRequest(String email, Long graduationRequestId) {
         //approve için gerekli insanda var mı onun kontrolü
-        if(!checkIfAdvisorIsAuthorized(email, graduationRequestId)){
+        if(!checkIfUserIsAuthorized(email, graduationRequestId)){
             throw new IllegalArgumentException("USER is not authorized to approve this request");
         }
 
@@ -55,7 +55,7 @@ public class GraduationRequestService {
                 .orElseThrow(() -> new IllegalArgumentException("Student not found")).getId();
     }
 
-    private boolean checkIfAdvisorIsAuthorized(String email, Long graduationRequestId) {
+    private boolean checkIfUserIsAuthorized(String email, Long graduationRequestId) {
         GraduationRequest graduationRequest = graduationRequestRepository.findById(graduationRequestId)
                 .orElseThrow(() -> new IllegalArgumentException("Graduation request not found"));
         return graduationRequest.getApprover().getEmail().equals(email);

@@ -30,10 +30,14 @@ public class GraduationRequestController {
 
     }
 
-    @PreAuthorize("hasRole('ADVISOR')")
+    @PreAuthorize("hasAnyRole('ADVISOR', 'STUDENTAFFAIRS', 'DEAN', 'SECRETARY')")
     @PostMapping("/approve")
     public ResponseEntity<String> approveGraduationRequest(Principal principal, @RequestBody GraduationApproveRequest graduationApproveRequest) {
-        graduationRequestService.approveGraduationRequest(principal.getName(), graduationApproveRequest.getGraduationRequestId());
+        try {
+            graduationRequestService.approveGraduationRequest(principal.getName(), graduationApproveRequest.getGraduationRequestId());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error occurred while approving the graduation request: " + e.getMessage());
+        }
         return ResponseEntity.ok("Graduation request approved successfully");
     }
 }
