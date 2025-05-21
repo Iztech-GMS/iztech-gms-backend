@@ -3,8 +3,10 @@ package com.iztechceng.graduation_managment;
 import com.iztechceng.graduation_managment.auth.model.entity.SecuredUser;
 import com.iztechceng.graduation_managment.auth.repository.SecuredUserRepository;
 import com.iztechceng.graduation_managment.user.model.User;
+import com.iztechceng.graduation_managment.user.model.entity.Advisor;
 import com.iztechceng.graduation_managment.user.model.entity.Role;
 import com.iztechceng.graduation_managment.user.model.enums.RoleName;
+import com.iztechceng.graduation_managment.user.repository.AdvisorRepository;
 import com.iztechceng.graduation_managment.user.repository.RoleRepository;
 import com.iztechceng.graduation_managment.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +14,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -29,13 +30,13 @@ public class GraduationManagmentApplication {
 	@Bean
 	CommandLineRunner mockAdvisorsAndStudents(
 			SecuredUserRepository securedUserRepository, RoleRepository roleRepository
-			, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+			, UserRepository userRepository, PasswordEncoder passwordEncoder,AdvisorRepository advisorRepository) {
 
 		return args -> {
 			if(!securedUserRepository.findById(Long.valueOf("1")).isPresent()) {
 				mockRoles(roleRepository);
 				mockSecuredUserList(securedUserRepository);
-				mockAuthorizedUsers(passwordEncoder, userRepository, roleRepository);
+				mockAuthorizedUsers(passwordEncoder, userRepository, roleRepository, advisorRepository);
 			}
 
 			};
@@ -83,7 +84,7 @@ public class GraduationManagmentApplication {
 	}
 
 	private void mockAuthorizedUsers(PasswordEncoder passwordEncoder, UserRepository userRepository,
-									 RoleRepository roleRepository) {
+									 RoleRepository roleRepository, AdvisorRepository advisorRepository) {
 		User user1 = User.builder()
 				.name("Ali Veli")
 				.email("aliveli@affairs.iztech.com")
@@ -108,7 +109,18 @@ public class GraduationManagmentApplication {
 				.roles(Set.of(roleRepository.findByRoleName(RoleName.ROLE_DEAN).orElseThrow()))
 				.build();
 
+		Advisor advisor1 = Advisor.builder()
+				.name("Samet Tenekeci")
+				.email("samettenekeci@advisor.iztech.com")
+				.phoneNumber("1234567890")
+				.password(passwordEncoder.encode("advisor123"))
+				.roles(Set.of(roleRepository.findByRoleName(RoleName.ROLE_ADVISOR).orElseThrow()))
+				.build();
+
+
+
 		userRepository.saveAll(List.of(user1, user2, user3));
+		advisorRepository.save(advisor1);
 
 	}
 

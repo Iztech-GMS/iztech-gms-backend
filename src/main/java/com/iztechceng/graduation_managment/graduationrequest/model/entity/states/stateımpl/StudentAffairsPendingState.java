@@ -27,8 +27,4 @@ public class StudentAffairsPendingState implements GraduationRequestState {
         return graduationRequest;
     }
 
-    @Override
-    public GraduationRequest reject(GraduationRequest graduationRequest, String emailWhoRejected) {
-        return null;
-    }
 }

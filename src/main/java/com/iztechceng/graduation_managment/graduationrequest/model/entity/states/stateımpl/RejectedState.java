@@ -10,9 +10,4 @@ public class RejectedState implements GraduationRequestState {
     public GraduationRequest approve(GraduationRequest graduationRequest, String emailWhoApproved) {
         return null;
     }
-
-    @Override
-    public GraduationRequest reject(GraduationRequest graduationRequest, String emailWhoRejected) {
-        return null;
-    }
 }

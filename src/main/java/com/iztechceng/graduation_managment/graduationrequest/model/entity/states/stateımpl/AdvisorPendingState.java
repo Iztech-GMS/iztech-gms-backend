@@ -20,31 +20,8 @@ public class AdvisorPendingState implements GraduationRequestState {
                ApproveStatus.ACCEPTED);
        graduationRequest.addIntoApprovalLogs(approvalLog);
        graduationRequest.setStatus(RequestStatus.SECRETARY_PENDING);
-        // UNUTMA ÜŞENDİN
-        // UNUTMA ÜŞENDİN VE SECRETARY LAZIM SİSTEME
-        // UNUTMA ÜŞENDİN
        graduationRequest.setApprover(graduationRequest.getStudent().getSecretary()); // the next person who will save dont forget
-        // UNUTMA ÜŞENDİN
-        // UNUTMA ÜŞENDİN VE SECRETARY LAZIM SİSTEME
-        // UNUTMA ÜŞENDİN
        return graduationRequest;
-
-    }
-
-    @Override
-    public GraduationRequest reject(GraduationRequest graduationRequest,String emailWhoRejected) {
-        ApprovalLog approvalLog = approvalLogService.createApprovalLog(graduationRequest, emailWhoRejected,
-                ApproveStatus.REJECTED);
-        graduationRequest.addIntoApprovalLogs(approvalLog);
-        graduationRequest.setStatus(RequestStatus.REJECTED);
-        // UNUTMA ÜŞENDİN
-        // UNUTMA ÜŞENDİN
-        // UNUTMA ÜŞENDİN
-        graduationRequest.setApprover(null); // the next person who will save dont forget
-        // UNUTMA ÜŞENDİN
-        // UNUTMA ÜŞENDİN
-        // UNUTMA ÜŞENDİN
-        return graduationRequest;
     }
 
 }
