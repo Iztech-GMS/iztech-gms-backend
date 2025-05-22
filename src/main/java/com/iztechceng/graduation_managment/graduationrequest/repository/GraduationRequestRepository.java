@@ -10,4 +10,7 @@ public interface GraduationRequestRepository extends JpaRepository<GraduationReq
 
     @Query("SELECT gr FROM GraduationRequest gr WHERE gr.approver.id = ?1")
     List<GraduationRequest> findByApprover(Long userId);
+
+    @Query("SELECT gr FROM GraduationRequest gr WHERE gr.student.id = ?1")
+    List<GraduationRequest> findByStudent(Long userId);
 }

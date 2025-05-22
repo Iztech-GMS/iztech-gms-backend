@@ -86,6 +86,14 @@ public class GraduationRequestService {
 
     }
 
+    public List<GraduationRequestResponse> getMyGraduationRequests(String email) {
+        Long userId = getUserIdByEmail(email);
+        List<GraduationRequest> graduationRequests = graduationRequestRepository
+                .findByStudent(userId);
+        return graduationRequests.stream().map(GraduationRequestService::toResponse).toList();
+
+    }
+
     private Long getUserIdByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Student not found")).getId();

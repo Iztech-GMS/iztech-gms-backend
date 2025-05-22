@@ -66,6 +66,16 @@ public class GraduationRequestController {
         }
     }
 
+    @PreAuthorize("hasRole('STUDENT')")
+    @GetMapping("/my-requests")
+    public ResponseEntity<?> getMyRequests(Principal principal) {
+        try {
+            return ResponseEntity.ok(graduationRequestService.getMyGraduationRequests(principal.getName()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error occurred while fetching my requests: " + e.getMessage());
+        }
+    }
+
 
 
 }
