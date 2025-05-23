@@ -47,6 +47,7 @@ public class NotificationService {
                 .receiverMail(notification.getReceiver() != null ? notification.getReceiver().getEmail() : null)
                 .receiverName(notification.getReceiver() != null ? notification.getReceiver().getName() : null)
                 .createdAt(notification.getCreatedAt())
+                .isRead(notification.isRead())
                 .build();
     }
 
@@ -59,4 +60,12 @@ public class NotificationService {
     public void deleteNotification(Long notificationId) {
         notificationRepository.deleteById(notificationId);
     }
+
+    public void markAsRead(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new RuntimeException("Notification not found"));
+        notification.setRead(true);
+        notificationRepository.save(notification);
+    }
+
 }

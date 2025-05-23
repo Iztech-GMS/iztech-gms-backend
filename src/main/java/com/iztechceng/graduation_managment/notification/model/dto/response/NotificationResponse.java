@@ -24,5 +24,7 @@ public class NotificationResponse {
     private String receiverMail;
 
     private LocalDateTime createdAt;
+
+    private boolean isRead = false;
 }
 

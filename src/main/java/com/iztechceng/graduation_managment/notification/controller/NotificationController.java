@@ -40,4 +40,19 @@ public class NotificationController {
 
     }
 
+    @PreAuthorize("hasAnyRole('ADVISOR','STUDENT', 'STUDENTAFFAIRS', 'DEAN', 'SECRETARY')")
+    @DeleteMapping("/delete/{notificationId}")
+    public ResponseEntity<?> deleteNotification(@PathVariable Long notificationId) {
+        notificationService.deleteNotification(notificationId);
+        return ResponseEntity.ok("Notification deleted successfully");
+    }
+
+    @PreAuthorize("hasAnyRole('ADVISOR','STUDENT', 'STUDENTAFFAIRS', 'DEAN', 'SECRETARY')")
+    @PutMapping("/read/{notificationId}")
+    public ResponseEntity<?> markAsRead(@PathVariable Long notificationId) {
+        notificationService.markAsRead(notificationId);
+        return ResponseEntity.ok("Notification marked as read successfully");
+    }
+
+
 }
