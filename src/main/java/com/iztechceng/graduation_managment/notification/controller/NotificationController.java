@@ -1,5 +1,6 @@
 package com.iztechceng.graduation_managment.notification.controller;
 
+import com.iztechceng.graduation_managment.notification.model.dto.request.NotificationReadRequest;
 import com.iztechceng.graduation_managment.notification.model.dto.request.NotificationRequest;
 import com.iztechceng.graduation_managment.notification.model.dto.response.NotificationResponse;
 import com.iztechceng.graduation_managment.notification.service.NotificationService;
@@ -48,9 +49,9 @@ public class NotificationController {
     }
 
     @PreAuthorize("hasAnyRole('ADVISOR','STUDENT', 'STUDENTAFFAIRS', 'DEAN', 'SECRETARY')")
-    @PutMapping("/read/{notificationId}")
-    public ResponseEntity<?> markAsRead(@PathVariable Long notificationId) {
-        notificationService.markAsRead(notificationId);
+    @PutMapping("/read")
+    public ResponseEntity<?> markAsRead(@RequestBody NotificationReadRequest notificationReadRequest) {
+        notificationReadRequest.getNotificationIds().forEach(notificationService::markAsRead);
         return ResponseEntity.ok("Notification marked as read successfully");
     }
 

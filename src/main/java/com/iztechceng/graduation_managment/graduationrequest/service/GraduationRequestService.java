@@ -43,6 +43,24 @@ public class GraduationRequestService {
 
     }
 
+    public void controlTheStudentProcessedRequest(String email) {
+        Long studentId = getUserIdByEmail(email);
+        isActiveGraduationRequestExists(studentId);
+        isGraduatedRequestExists(studentId);
+    }
+
+    private void isActiveGraduationRequestExists(Long studentId) {
+        if(graduationRequestRepository.isExistActiveRequest(studentId)){
+            throw new IllegalArgumentException("There is an active graduation request for this student");
+        }
+    }
+
+    private void isGraduatedRequestExists(Long studentId) {
+        if(graduationRequestRepository.existsGraduatedRequestByStudentId(studentId)){
+            throw new IllegalArgumentException("There is a graduated request for this student");
+        }
+    }
+
     public void approveGraduationRequest(String email, Long graduationRequestId) {
         //approve için gerekli insanda var mı onun kontrolü
         if(!checkIfUserIsAuthorized(email, graduationRequestId)){
@@ -105,6 +123,8 @@ public class GraduationRequestService {
         return graduationRequest.getApprover().getEmail().equals(email);
 
     }
+
+
     public static GraduationRequestResponse toResponse(GraduationRequest entity) {
         return GraduationRequestResponse.builder()
                 .id(entity.getId())

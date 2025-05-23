@@ -24,10 +24,10 @@ public class GraduationRequestController {
     public ResponseEntity<String> createGraduationRequest(Principal principal) {
         try{
             studentEligibilityCheckService.checkIfStudentIsEligibleForGraduation(principal.getName());
+            graduationRequestService.controlTheStudentProcessedRequest(principal.getName());
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        // TODO: BURADAN ONCE STUDENT BU REQUESTİ OLUŞTURABİLİR Mİ KONTROLÜ YAPICAKSINIZ.!!
         graduationRequestService.createGraduationRequest(principal.getName());
         return ResponseEntity.ok("Graduation request created successfully");
 
