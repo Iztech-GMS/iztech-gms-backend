@@ -28,6 +28,7 @@ public class Notification {
 
     private LocalDateTime createdAt;
 
+    @Column(name = "is_read")
     private boolean isRead = false;
 
 }

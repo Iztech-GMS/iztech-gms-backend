@@ -65,9 +65,9 @@ public class GraduationManagmentApplication {
 				.build();
 
 		SecuredUser user4 = SecuredUser.builder()
-				.email("ahmetyılmaz@secretary.iztech.com")
+				.email("ahmetyilmaz@secretary.iztech.com")
 				.firstName("Ahmet")
-				.lastName("Yılmaz")
+				.lastName("Yilmaz")
 				.build();
 
 		SecuredUser user5 = SecuredUser.builder()
@@ -94,8 +94,8 @@ public class GraduationManagmentApplication {
 				.build();
 
 		User user2 = User.builder()
-				.name("Ahmet Yılmaz")
-				.email("ahmetyılmaz@secretary.iztech.com")
+				.name("Ahmet Yilmaz")
+				.email("ahmetyilmaz@secretary.iztech.com")
 				.phoneNumber("1234567890")
 				.password(passwordEncoder.encode("secretary123"))
 				.roles(Set.of(roleRepository.findByRoleName(RoleName.ROLE_SECRETARY).orElseThrow()))
