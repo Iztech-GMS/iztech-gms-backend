@@ -19,6 +19,9 @@ public class Student extends User {
 
     private GraduationStatus graduationStatus;
 
+    @Column(name = "department", nullable = false)
+    private String department;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advisor_id")
     private Advisor advisor;
