@@ -42,6 +42,7 @@ public class StudentRegistrationStrategy implements RegistrationStrategy {
                 .dean(userRepository.findByRolesRoleName(RoleName.ROLE_DEAN).getFirst())
                 .secretary(userRepository.findByRolesRoleName(RoleName.ROLE_SECRETARY).getFirst())
                 .studentAffairs(userRepository.findByRolesRoleName(RoleName.ROLE_STUDENTAFFAIRS).getFirst())
+                .department("Computer Engineering") // TODO: Change this to a proper department selection
                 .build();
         studentRepository.save(student);
     }

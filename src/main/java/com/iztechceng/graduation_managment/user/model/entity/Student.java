@@ -17,6 +17,8 @@ import lombok.experimental.SuperBuilder;
 @PrimaryKeyJoinColumn(name = "studentId")
 public class Student extends User {
 
+    @Column(name = "graduation_status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private GraduationStatus graduationStatus;
 
     @Column(name = "department", nullable = false)

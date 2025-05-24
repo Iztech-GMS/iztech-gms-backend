@@ -3,6 +3,7 @@ package com.iztechceng.graduation_managment.graduationrequest.controller;
 import com.iztechceng.graduation_managment.graduationrequest.model.dto.request.GraduationConsiderationRequest;
 import com.iztechceng.graduation_managment.graduationrequest.service.GraduationRequestService;
 import com.iztechceng.graduation_managment.graduationrequest.service.StudentEligibilityCheckService;
+import com.iztechceng.graduation_managment.systemsetting.service.SystemSettingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,10 +19,14 @@ import java.security.Principal;
 public class GraduationRequestController {
     private final GraduationRequestService graduationRequestService;
     private final StudentEligibilityCheckService studentEligibilityCheckService;
+    private final SystemSettingService systemSettingService;
 
     @PreAuthorize("hasRole('STUDENT')")
     @PostMapping()
     public ResponseEntity<String> createGraduationRequest(Principal principal) {
+        if( !systemSettingService.isGraduationRequestEnabled()) {
+            return ResponseEntity.badRequest().body("Graduation request interval is closed.");
+        }
         try{
             studentEligibilityCheckService.checkIfStudentIsEligibleForGraduation(principal.getName());
             graduationRequestService.controlTheStudentProcessedRequest(principal.getName());

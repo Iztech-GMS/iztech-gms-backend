@@ -1,5 +1,6 @@
 package com.iztechceng.graduation_managment.ranking.controller;
 
+import com.iztechceng.graduation_managment.ranking.dto.StudentRankingResponse;
 import com.iztechceng.graduation_managment.user.model.entity.Student;
 import com.iztechceng.graduation_managment.ranking.service.StudentRankingService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,13 @@ public class StudentRankingController {
 
     @GetMapping("/graduated")
     @PreAuthorize("hasAnyRole('ADMIN', 'DEAN', 'SECRETARY', 'STUDENTAFFAIRS')")
-    public ResponseEntity<List<Student>> getGraduatedStudentsByGpa() {
+    public ResponseEntity<List<StudentRankingResponse>> getGraduatedStudentsByGpa() {
         return ResponseEntity.ok(studentRankingService.getGraduatedStudentsByGpa());
     }
 
     @GetMapping("/graduated/department/{department}")
     @PreAuthorize("hasAnyRole('ADMIN', 'DEAN', 'SECRETARY', 'STUDENTAFFAIRS')")
-    public ResponseEntity<List<Student>> getGraduatedStudentsByDepartmentAndGpa(
+    public ResponseEntity<List<StudentRankingResponse>> getGraduatedStudentsByDepartmentAndGpa(
             @PathVariable String department) {
         return ResponseEntity.ok(studentRankingService.getGraduatedStudentsByDepartmentAndGpa(department));
     }

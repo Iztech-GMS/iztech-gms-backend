@@ -2,6 +2,8 @@ package com.iztechceng.graduation_managment;
 
 import com.iztechceng.graduation_managment.auth.model.entity.SecuredUser;
 import com.iztechceng.graduation_managment.auth.repository.SecuredUserRepository;
+import com.iztechceng.graduation_managment.systemsetting.model.entity.SystemSetting;
+import com.iztechceng.graduation_managment.systemsetting.repository.SystemSettingsRepository;
 import com.iztechceng.graduation_managment.user.model.User;
 import com.iztechceng.graduation_managment.user.model.entity.Advisor;
 import com.iztechceng.graduation_managment.user.model.entity.Role;
@@ -29,7 +31,7 @@ public class GraduationManagmentApplication {
 
 	@Bean
 	CommandLineRunner mockAdvisorsAndStudents(
-			SecuredUserRepository securedUserRepository, RoleRepository roleRepository
+			SecuredUserRepository securedUserRepository,SystemSettingsRepository systemSettingsRepository, RoleRepository roleRepository
 			, UserRepository userRepository, PasswordEncoder passwordEncoder,AdvisorRepository advisorRepository) {
 
 		return args -> {
@@ -37,6 +39,7 @@ public class GraduationManagmentApplication {
 				mockRoles(roleRepository);
 				mockSecuredUserList(securedUserRepository);
 				mockAuthorizedUsers(passwordEncoder, userRepository, roleRepository, advisorRepository);
+				mockSettings(systemSettingsRepository);
 			}
 
 			};
@@ -155,4 +158,12 @@ public class GraduationManagmentApplication {
 
 		System.out.println("✅ Mock roles inserted.");
 	}
+
+	private void mockSettings(SystemSettingsRepository systemSettingsRepository) {
+		if (systemSettingsRepository.findById(1L).isEmpty()) {
+			systemSettingsRepository.save(SystemSetting.builder().graduationRequestEnabled(true).build());
+			System.out.println("✅ Settings inserted.");
+		}
+	}
+
 }

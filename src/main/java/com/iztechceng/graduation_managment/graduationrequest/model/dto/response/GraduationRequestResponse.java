@@ -1,6 +1,7 @@
 package com.iztechceng.graduation_managment.graduationrequest.model.dto.response;
 
 import com.iztechceng.graduation_managment.graduationrequest.model.enums.RequestStatus;
+import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,6 +15,9 @@ public class GraduationRequestResponse {
     private Long studentId;
     private String studentName;
     private String studentEmail;
+    private double gpa;
+    private int totalEarnedCredits;
+    private boolean isMandatoryCourseCompleted;
     private LocalDateTime requestDate;
     private RequestStatus status;
     private String approverName;
