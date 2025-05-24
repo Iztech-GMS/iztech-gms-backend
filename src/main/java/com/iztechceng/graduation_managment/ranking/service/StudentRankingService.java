@@ -37,6 +37,7 @@ public class StudentRankingService {
                 .department(student.getDepartment())
                 .gpa(student.getGpa())
                 .graduationStatus(student.getGraduationStatus())
+                .certificates(student.getCertificates())
                 .build();
     }
 

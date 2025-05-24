@@ -11,4 +11,6 @@ import java.util.List;
 public interface StudentRankingRepository extends JpaRepository<Student, Long> {
     List<Student> findByGraduationStatusOrderByGpaDesc(GraduationStatus status);
     List<Student> findByGraduationStatusAndDepartmentOrderByGpaDesc(GraduationStatus status, String department);
+    List<Student> findTop3ByGraduationStatusOrderByGpaDesc(GraduationStatus status);
+
 } 

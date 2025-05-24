@@ -2,10 +2,14 @@ package com.iztechceng.graduation_managment.user.model.entity;
 
 
 import com.iztechceng.graduation_managment.user.model.User;
+import com.iztechceng.graduation_managment.user.model.enums.CertificateType;
 import com.iztechceng.graduation_managment.user.model.enums.GraduationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -48,6 +52,21 @@ public class Student extends User {
 
     @Column(name = "mandatory_completed")
     private boolean isMandatoryCourseCompleted;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "student_certificates",
+            joinColumns = @JoinColumn(name = "student_id")
+    )
+    @Column(name = "certificate_type")
+    @Enumerated(EnumType.STRING)
+    private List<CertificateType> certificates = new ArrayList<>();
+
+    public void addCertificate(CertificateType certificateType) {
+        if (!certificates.contains(certificateType)) {
+            certificates.add(certificateType);
+        }
+    }
 
 
 }

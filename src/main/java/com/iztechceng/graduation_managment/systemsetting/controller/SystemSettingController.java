@@ -1,5 +1,6 @@
 package com.iztechceng.graduation_managment.systemsetting.controller;
 
+import com.iztechceng.graduation_managment.certification.CertificationDeterminerService;
 import com.iztechceng.graduation_managment.systemsetting.service.SystemSettingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SystemSettingController {
     private final SystemSettingService systemSettingService;
+    private final CertificationDeterminerService certificationDeterminerService;
 
 
     // close the graduation request interval
@@ -20,7 +22,7 @@ public class SystemSettingController {
     @PutMapping("/admin/close-graduation-request")
     public ResponseEntity<?> closeGraduationRequestStatus() {
         systemSettingService.toggleGraduationRequest(false);
-        // TO-DO:
+        certificationDeterminerService.assignCertificates();
         return ResponseEntity.ok("Graduation request interval closed.");
     }
 
