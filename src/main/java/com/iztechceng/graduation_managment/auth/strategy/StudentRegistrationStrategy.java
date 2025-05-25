@@ -1,7 +1,6 @@
 package com.iztechceng.graduation_managment.auth.strategy;
 
 import com.iztechceng.graduation_managment.auth.model.dto.request.RegisterRequest;
-import com.iztechceng.graduation_managment.user.model.entity.Advisor;
 import com.iztechceng.graduation_managment.user.model.entity.Student;
 import com.iztechceng.graduation_managment.user.model.enums.GraduationStatus;
 import com.iztechceng.graduation_managment.user.model.enums.RoleName;
@@ -43,7 +42,16 @@ public class StudentRegistrationStrategy implements RegistrationStrategy {
                 .secretary(userRepository.findByRolesRoleName(RoleName.ROLE_SECRETARY).getFirst())
                 .studentAffairs(userRepository.findByRolesRoleName(RoleName.ROLE_STUDENTAFFAIRS).getFirst())
                 .department("Computer Engineering") // TODO: Change this to a proper department selection
+                .gpa(generateRandomGPA())
+                .totalEarnedCredits(240)
+                .isMandatoryCourseCompleted(true)
                 .build();
         studentRepository.save(student);
     }
+
+    private double generateRandomGPA() {
+        double gpa = 2 + (4 - 2) * Math.random(); // 2 ile 4 arası
+        return Math.round(gpa * 100.0) / 100.0;  // virgülden sonra 2 basamak
+    }
+
 }

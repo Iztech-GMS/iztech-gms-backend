@@ -32,8 +32,9 @@ public class UserRegistrationService {
     }
 
     public String getUserFullName(String email) {
-        return securedUserRepository.findByEmail(email)
-                .map(user -> user.getFullName())
+        return userRepository
+                .findByEmail(email)
+                .map(user -> user.getName())
                 .orElseThrow(() -> new IllegalArgumentException("Kullanıcı bulunamadı."));
     }
 
