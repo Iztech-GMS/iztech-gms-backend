@@ -19,7 +19,7 @@ public class UserRegistrationService {
     public void registerUser(RegisterRequest registerRequest) {
 
         if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Bu e-posta adresi zaten kayıtlı.");
+            throw new IllegalArgumentException("The email is already registered.");
         }
 
         String fullName = securedUserRepository.findByEmail(registerRequest.getEmail()).get().getFullName();
@@ -35,7 +35,7 @@ public class UserRegistrationService {
         return userRepository
                 .findByEmail(email)
                 .map(user -> user.getName())
-                .orElseThrow(() -> new IllegalArgumentException("Kullanıcı bulunamadı."));
+                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
     }
 
 }
